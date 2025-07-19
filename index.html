@@ -1,126 +1,289 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE html><html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>项目工作说明</title>
   <style>
-    /* 原有样式省略… */
-
-    /* AI Chatbox 样式 */
-    #chat-toggle {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      width: 56px;
-      height: 56px;
-      background-color: #0078d7;
-      border-radius: 50%;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      cursor: pointer;
+    /* 全局样式 */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 28px;
-      z-index: 1000;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
     }
-    #chat-box {
-      position: fixed;
-      bottom: 1rem;
+    header {
+      background-color: #0078d7;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    /* 语言切换按钮 */
+    #lang-toggle {
+      position: absolute;
+      top: 0.75rem;
       right: 1rem;
-      width: 300px;
-      max-height: 400px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    main {
+      flex: 1;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .card {
       background: #fff;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 1000;
-    }
-    #chat-header {
-      background: #0078d7;
-      color: #fff;
-      padding: 0.5rem;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #chat-messages {
-      flex: 1;
-      padding: 0.5rem;
-      overflow-y: auto;
-      font-size: 0.9rem;
-    }
-    .msg { margin-bottom: 0.75rem; }
-    .msg.user { text-align: right; }
-    .msg .bubble {
-      display: inline-block;
-      padding: 0.5rem;
-      border-radius: 12px;
-      max-width: 80%;
-    }
-    .msg.user .bubble { background: #0078d7; color: #fff; }
-    .msg.ai .bubble { background: #f1f1f1; color: #333; }
-    #chat-input {
-      display: flex;
-      border-top: 1px solid #e0e0e0;
-    }
-    #chat-input input {
-      flex: 1;
-      border: none;
-      padding: 0.5rem;
-      font-size: 0.9rem;
-    }
-    #chat-input button {
-      border: none;
-      background: #0078d7;
-      color: #fff;
-      padding: 0 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
       cursor: pointer;
     }
+    .card:hover {
+      transform: translateY(-2px);
+    }
+    .card .title {
+      display: block;
+      padding: 1.25rem;
+      color: #0078d7;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+    footer {
+      text-align: center;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      color: #777;
+    }/* 项目视图（iframe + 返回） */
+#project-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  display: none;
+  flex-direction: column;
+  z-index: 900;
+}
+#project-header {
+  background: #0078d7;
+  color: #fff;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+#project-back {
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+#project-frame {
+  flex: 1;
+  border: none;
+}
+
+/* AI Chatbox 样式（保持在最上层） */
+#chat-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 56px;
+  height: 56px;
+  background-color: #0078d7;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 28px;
+  z-index: 1000;
+}
+#chat-box {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 300px;
+  max-height: 400px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+#chat-header {
+  background: #0078d7;
+  color: #fff;
+  padding: 0.5rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#chat-messages {
+  flex: 1;
+  padding: 0.5rem;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+.msg { margin-bottom: 0.75rem; }
+.msg.user { text-align: right; }
+.msg .bubble {
+  display: inline-block;
+  padding: 0.5rem;
+  border-radius: 12px;
+  max-width: 80%;
+}
+.msg.user .bubble { background: #0078d7; color: #fff; }
+.msg.ai .bubble { background: #f1f1f1; color: #333; }
+#chat-input {
+  display: flex;
+  border-top: 1px solid #e0e0e0;
+}
+#chat-input input {
+  flex: 1;
+  border: none;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+#chat-input button {
+  border: none;
+  background: #0078d7;
+  color: #fff;
+  padding: 0 1rem;
+  cursor: pointer;
+}
+
   </style>
 </head>
 <body>
   <header>
-    <h1>项目工作说明</h1>
+    <h1 id="header-title">项目工作说明</h1>
+    <button id="lang-toggle">EN</button>
   </header>
-  <main>
-    <div class="card">
-      <a href="https://luoxisg.github.io/paint/" target="_blank">
-        三轴喷绘系统工作说明
-      </a>
+  <main id="list-view">
+    <div class="card" data-url="https://luoxisg.github.io/paint/">
+      <span class="title" id="card1">三轴喷绘系统工作说明</span>
     </div>
-    <div class="card">
-      <a href="https://luoxisg.github.io/cutting/" target="_blank">
-        裁切系统工作说明
-      </a>
+    <div class="card" data-url="https://luoxisg.github.io/cutting/">
+      <span class="title" id="card2">裁切系统工作说明</span>
     </div>
-  </main>
-  <footer>
-    © 2025 LuoxiSG
-  </footer>
-
-  <!-- AI Chatbox Toggle 按钮 -->
-  <div id="chat-toggle">💬</div>
-
-  <!-- AI Chatbox 窗口 -->
+    <div class="card" data-url="https://github.com/luoxisg/Alboxnew">
+      <span class="title" id="card3">Alboxnew 仓库</span>
+    </div>
+    <div class="card" data-url="https://github.com/luoxisg/RoboMaster-SDK">
+      <span class="title" id="card4">RoboMaster-SDK 仓库</span>
+    </div>
+    <div class="card" data-url="https://github.com/luoxisg/xcareBrochure">
+      <span class="title" id="card5">xcareBrochure 仓库</span>
+    </div>
+    <div class="card" data-url="https://github.com/luoxisg/xcare">
+      <span class="title" id="card6">xcare 仓库</span>
+    </div>
+  </main>  <footer id="footer-text">© 2025 LuoxiSG</footer>  <!-- 项目视图容器 -->  <div id="project-view">
+    <div id="project-header">
+      <button id="project-back">返回</button>
+      <span id="project-title"></span>
+    </div>
+    <iframe id="project-frame"></iframe>
+  </div>  <!-- AI Chatbox Toggle & 窗口 -->  <div id="chat-toggle">💬</div>
   <div id="chat-box">
-    <div id="chat-header">
-      AI 小助手
-      <span id="chat-close" style="cursor:pointer;">✖️</span>
-    </div>
+    <div id="chat-header"><span id="chat-header-text">AI 小助手</span><span id="chat-close" style="cursor:pointer;">✖️</span></div>
     <div id="chat-messages"></div>
     <div id="chat-input">
-      <input type="text" id="chat-text" placeholder="请输入问题…" />
+      <input type="text" id="chat-text" placeholder="请输入问题…"/>
       <button id="chat-send">发送</button>
     </div>
-  </div>
+  </div>  <script>
+    // 文案中英文对照
+    const texts = {
+      zh: {
+        header: "项目工作说明",
+        card1: "三轴喷绘系统工作说明",
+        card2: "裁切系统工作说明",
+        card3: "Alboxnew 仓库",
+        card4: "RoboMaster-SDK 仓库",
+        card5: "xcareBrochure 仓库",
+        card6: "xcare 仓库",
+        footer: "© 2025 LuoxiSG",
+        chatHeader: "AI 小助手",
+        chatPlaceholder: "请输入问题…",
+        chatSend: "发送",
+        back: "返回"
+      },
+      en: {
+        header: "Project Overview",
+        card1: "3-Axis Painting System Docs",
+        card2: "Cutting System Docs",
+        card3: "Alboxnew Repo",
+        card4: "RoboMaster SDK Repo",
+        card5: "xcareBrochure Repo",
+        card6: "xcare Repo",
+        footer: "© 2025 LuoxiSG",
+        chatHeader: "AI Assistant",
+        chatPlaceholder: "Type your question...",
+        chatSend: "Send",
+        back: "Back"
+      }
+    };
+    let lang = 'zh';
 
-  <script>
-    // 元素引用
+    // 切换中英文
+    document.getElementById('lang-toggle').addEventListener('click', () => {
+      lang = lang === 'zh' ? 'en' : 'zh';
+      updateTexts();
+      document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : '中';
+    });
+    function updateTexts() {
+      document.getElementById('header-title').textContent = texts[lang].header;
+      document.getElementById('card1').textContent = texts[lang].card1;
+      document.getElementById('card2').textContent = texts[lang].card2;
+      document.getElementById('card3').textContent = texts[lang].card3;
+      document.getElementById('card4').textContent = texts[lang].card4;
+      document.getElementById('card5').textContent = texts[lang].card5;
+      document.getElementById('card6').textContent = texts[lang].card6;
+      document.getElementById('footer-text').textContent = texts[lang].footer;
+      document.getElementById('chat-header-text').textContent = texts[lang].chatHeader;
+      document.getElementById('chat-text').placeholder = texts[lang].chatPlaceholder;
+      document.getElementById('chat-send').textContent = texts[lang].chatSend;
+      document.getElementById('project-back').textContent = texts[lang].back;
+    }
+
+    // 项目进入/退出
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const url = card.dataset.url;
+        const title = card.querySelector('.title').textContent;
+        document.getElementById('project-title').textContent = title;
+        document.getElementById('project-frame').src = url;
+        document.getElementById('list-view').style.display = 'none';
+        document.getElementById('project-view').style.display = 'flex';
+      });
+    });
+    document.getElementById('project-back').addEventListener('click', () => {
+      document.getElementById('project-frame').src = '';
+      document.getElementById('project-view').style.display = 'none';
+      document.getElementById('list-view').style.display = 'flex';
+    });
+
+    // AI Chatbox 交互
     const toggle = document.getElementById('chat-toggle');
     const box = document.getElementById('chat-box');
     const closeBtn = document.getElementById('chat-close');
@@ -128,11 +291,8 @@
     const input = document.getElementById('chat-text');
     const sendBtn = document.getElementById('chat-send');
 
-    // 展开/收起
     toggle.addEventListener('click', () => box.style.display = 'flex');
     closeBtn.addEventListener('click', () => box.style.display = 'none');
-
-    // 发送消息
     sendBtn.addEventListener('click', sendMessage);
     input.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
 
@@ -141,7 +301,6 @@
       if (!text) return;
       appendMessage('user', text);
       input.value = '';
-      // 请求后端 AI 接口
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
@@ -150,13 +309,10 @@
         });
         const data = await res.json();
         appendMessage('ai', data.reply);
-      } catch (err) {
-        appendMessage('ai', '请求失败，请稍后重试。');
-        console.error(err);
+      } catch {
+        appendMessage('ai', lang === 'zh' ? '请求失败，请稍后重试。' : 'Request failed, please try again.');
       }
     }
-
-    // 渲染消息
     function appendMessage(who, text) {
       const msg = document.createElement('div');
       msg.className = `msg ${who}`;
@@ -167,6 +323,8 @@
       messages.appendChild(msg);
       messages.scrollTop = messages.scrollHeight;
     }
-  </script>
-</body>
+
+    // 初始渲染
+    updateTexts();
+  </script></body>
 </html>
