@@ -16,6 +16,7 @@
       --nav-text: #888888;
       --nav-active: #4FC3F7;
     }
+    /* 全局样式 */
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
@@ -49,7 +50,7 @@
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      margin-bottom: 56px;
+      margin-bottom: 56px; /* 底部导航留空 */
     }
     .card {
       background: var(--card-bg);
@@ -69,6 +70,7 @@
       font-size: 1.1rem;
       text-decoration: none;
     }
+    /* 下载按钮 */
     #download-section {
       text-align: center;
       padding: 1rem;
@@ -87,12 +89,12 @@
       font-size: 0.8rem;
       color: var(--text);
     }
+    /* 内嵌视图 */
     #project-view {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       background: var(--bg);
       display: none;
       flex-direction: column;
@@ -101,105 +103,65 @@
     #project-header {
       background: var(--header-bg);
       color: var(--text);
-      padding: 0.75rem;
-      display: flex;
-      align-items: center;
+      padding: 0.75rem; display: flex; align-items: center;
     }
     #project-back {
-      border: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 1rem;
-      cursor: pointer;
-      margin-right: 1rem;
+      border: none; background: transparent;
+      color: var(--text); font-size: 1rem;
+      cursor: pointer; margin-right: 1rem;
     }
-    #project-frame {
-      flex: 1;
-      border: none;
-      background: var(--bg);
-    }
+    #project-frame { flex: 1; border: none; background: var(--bg); }
+    /* AI Chatbox */
     #chat-toggle {
-      position: fixed;
-      bottom: 72px;
-      right: 1rem;
-      width: 56px;
-      height: 56px;
-      background-color: var(--link);
-      border-radius: 50%;
+      position: fixed; bottom: 72px; right: 1rem;
+      width: 56px; height: 56px;
+      background-color: var(--link); border-radius: 50%;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #000;
-      font-size: 28px;
-      z-index: 1000;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      color: #000; font-size: 28px; z-index: 1000;
     }
     #chat-box {
-      position: fixed;
-      bottom: 72px;
-      right: 1rem;
-      width: 300px;
-      max-height: 400px;
-      background: var(--card-bg);
-      border-radius: 8px;
+      position: fixed; bottom: 72px; right: 1rem;
+      width: 300px; max-height: 400px;
+      background: var(--card-bg); border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 1000;
+      display: none; flex-direction: column;
+      overflow: hidden; z-index: 1000;
     }
     #chat-header, #chat-input {
-      padding: 0.5rem;
-      background: var(--header-bg);
-      color: var(--text);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: var(--header-bg); color: var(--text);
+      padding: 0.5rem; display: flex;
+      justify-content: space-between; align-items: center;
     }
     #chat-messages {
-      flex: 1;
-      padding: 0.5rem;
-      overflow-y: auto;
-      font-size: 0.9rem;
+      flex: 1; padding: 0.5rem;
+      overflow-y: auto; font-size: 0.9rem;
       color: var(--text);
     }
     .msg { margin-bottom: 0.75rem; }
     .msg.user { text-align: right; }
     .bubble {
-      display: inline-block;
-      padding: 0.5rem;
-      border-radius: 12px;
-      max-width: 80%;
+      display: inline-block; padding: 0.5rem;
+      border-radius: 12px; max-width: 80%;
     }
     .msg.user .bubble { background: var(--link); color: #000; }
     .msg.ai .bubble { background: #333; color: var(--text); }
+    /* 底部导航 */
     #bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 56px;
+      position: fixed; bottom: 0; left: 0;
+      width: 100%; height: 56px;
       background: var(--nav-bg);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 -1px 4px rgba(0,0,0,0.5);
+      display: flex; justify-content: space-around;
+      align-items: center; box-shadow: 0 -1px 4px rgba(0,0,0,0.5);
       z-index: 950;
     }
     #bottom-nav a {
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--nav-text);
-      text-decoration: none;
+      text-align: center; font-size: 0.75rem;
+      color: var(--nav-text); text-decoration: none;
     }
-    #bottom-nav a.active {
-      color: var(--nav-active);
-    }
-    #bottom-nav .icon {
-      display: block;
-      font-size: 1.25rem;
-    }
+    #bottom-nav a.active { color: var(--nav-active); }
+    #bottom-nav .icon { display: block; font-size: 1.25rem; }
   </style>
 </head>
 <body>
@@ -209,11 +171,9 @@
   </header>
 
   <main id="list-view">
-    <!-- 下载 APK -->
     <div id="download-section">
       <a id="download-btn" href="https://luoxisg.github.io/downloads/lxwork.apk" download>下载 APK</a>
     </div>
-
     <div class="card" data-url="https://luoxisg.github.io/paint/">
       <span class="title" id="card1">三轴喷绘系统工作说明</span>
     </div>
@@ -232,11 +192,14 @@
     <div class="card" data-url="https://github.com/luoxisg/xcare">
       <span class="title" id="card6">xcare 仓库</span>
     </div>
+    <div class="card" data-url="https://github.com/luoxisg/xstellux">
+      <span class="title" id="card7">xstellux 仓库</span>
+    </div>
   </main>
 
   <footer id="footer-text">© 2025 LuoxiSG</footer>
 
-  <!-- 项目内嵌视图 -->
+  <!-- 内嵌视图 -->
   <div id="project-view">
     <div id="project-header">
       <button id="project-back">返回</button>
@@ -278,6 +241,7 @@
         card4: "RoboMaster-SDK 仓库",
         card5: "xcareBrochure 仓库",
         card6: "xcare 仓库",
+        card7: "xstellux 仓库",
         footer: "© 2025 LuoxiSG",
         chatHeader: "AI 小助手",
         chatPlaceholder: "请输入问题…",
@@ -292,6 +256,7 @@
         card4: "RoboMaster SDK Repo",
         card5: "xcareBrochure Repo",
         card6: "xcare Repo",
+        card7: "xstellux Repo",
         footer: "© 2025 LuoxiSG",
         chatHeader: "AI Assistant",
         chatPlaceholder: "Type your question…",
@@ -302,13 +267,13 @@
     let lang = 'zh';
 
     document.getElementById('lang-toggle').addEventListener('click', () => {
-      lang = (lang === 'zh' ? 'en' : 'zh');
+      lang = lang === 'zh' ? 'en' : 'zh';
       updateTexts();
       document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : '中';
     });
     function updateTexts() {
       document.getElementById('header-title').textContent = texts[lang].header;
-      for (let i = 1; i <= 6; i++) {
+      for (let i = 1; i <= 7; i++) {
         document.getElementById(`card${i}`).textContent = texts[lang][`card${i}`];
       }
       document.getElementById('footer-text').textContent = texts[lang].footer;
@@ -332,6 +297,7 @@
       document.getElementById('list-view').style.display = 'flex';
     });
 
+    // AI Chatbox
     const toggle = document.getElementById('chat-toggle');
     const box = document.getElementById('chat-box');
     const closeBtn = document.getElementById('chat-close');
@@ -352,13 +318,13 @@
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({message: text})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
         });
-        const {reply} = await res.json();
+        const { reply } = await res.json();
         appendMsg('ai', reply);
       } catch {
-        appendMsg('ai', lang==='zh'?'请求失败，请稍后重试。':'Request failed.');
+        appendMsg('ai', lang === 'zh' ? '请求失败，请稍后重试。' : 'Request failed.');
       }
     }
     function appendMsg(who, txt) {
@@ -372,6 +338,7 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
+    // 初始渲染
     updateTexts();
   </script>
 </body>
