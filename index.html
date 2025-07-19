@@ -35,7 +35,7 @@
       min-height: 100vh;
       position: relative;
     }
-
+    
     /* 增强的可访问性：为键盘导航添加清晰的焦点样式 */
     :focus-visible {
       outline: 2px solid var(--link);
@@ -124,7 +124,7 @@
       padding-bottom: 0.5rem;
     }
 
-   .card {
+  .card {
       background: var(--card-bg);
       border-radius: var(--border-radius);
       margin-bottom: 1rem;
@@ -132,11 +132,11 @@
       transition: background 0.2s, transform 0.1s;
       overflow: hidden; /* 确保子元素圆角 */
     }
-   .card:hover {
+  .card:hover {
       transform: translateY(-2px);
     }
 
-   .card-link {
+  .card-link {
       display: flex;
       align-items: center;
       gap: 0.75rem;
@@ -144,21 +144,21 @@
       color: var(--link);
       padding: 1.25rem 1rem;
     }
-   .card-link:hover {
+  .card-link:hover {
       color: var(--link-hover);
       background: #2a2a2a;
     }
 
-   .card.icon {
+  .card.icon {
       font-size: 1.5rem;
     }
 
-   .card.title {
+  .card.title {
       flex: 1;
       font-size: 1.1rem;
     }
     
-   .no-results {
+  .no-results {
       text-align: center;
       padding: 2rem;
       color: var(--text-muted);
@@ -329,26 +329,27 @@
       color: var(--text);
     }
 
-   .msg { 
+  .msg { 
       margin-bottom: 0.75rem; 
       display: flex;
     }
-   .msg.user { justify-content: flex-end; }
-   .msg.ai { justify-content: flex-start; }
-   .msg.typing {
+  .msg.user { justify-content: flex-end; }
+  .msg.ai { justify-content: flex-start; }
+  .msg.typing.bubble {
       font-style: italic;
       color: var(--text-muted);
+      background: #333;
     }
 
-   .bubble {
+  .bubble {
       display: inline-block;
       padding: 0.5rem 0.75rem;
       border-radius: 12px;
       max-width: 85%;
       line-height: 1.4;
     }
-   .msg.user.bubble { background: var(--link); color: #000; border-bottom-right-radius: 2px; }
-   .msg.ai.bubble { background: #333; color: var(--text); border-bottom-left-radius: 2px; }
+  .msg.user.bubble { background: var(--link); color: #000; border-bottom-right-radius: 2px; }
+  .msg.ai.bubble { background: #333; color: var(--text); border-bottom-left-radius: 2px; }
 
     #chat-input-container {
       padding: 0.5rem;
@@ -376,6 +377,10 @@
       color: #000;
       cursor: pointer;
     }
+    #chat-send:disabled {
+      background-color: var(--text-muted);
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -392,14 +397,14 @@
 
     <section>
       <h2 data-lang-key="section_industrial">工业系统</h2>
-      <div class="card">
-        <a href="https://luoxisg.github.io/paint/" class="card-link" data-title-key="card1">
+      <div class="card" data-id="paint">
+        <a href="/paint" class="card-link" data-view-link data-url="https://luoxisg.github.io/paint/" data-title-key="card1">
           <span class="icon" role="img" aria-label="文档图标">📄</span>
           <span class="title">三轴喷绘系统工作说明</span>
         </a>
       </div>
-      <div class="card">
-        <a href="https://luoxisg.github.io/cutting/" class="card-link" data-title-key="card2">
+      <div class="card" data-id="cutting">
+        <a href="/cutting" class="card-link" data-view-link data-url="https://luoxisg.github.io/cutting/" data-title-key="card2">
           <span class="icon" role="img" aria-label="剪刀图标">✂️</span>
           <span class="title">裁切系统工作说明</span>
         </a>
@@ -408,20 +413,20 @@
 
     <section>
       <h2 data-lang-key="section_consumer">消费者系统</h2>
-      <div class="card">
-        <a href="https://github.com/luoxisg/xcareBrochure" class="card-link" data-title-key="card5">
+      <div class="card" data-id="xcareBrochure">
+        <a href="/xcareBrochure" class="card-link" data-view-link data-url="https://github.com/luoxisg/xcareBrochure" data-title-key="card5">
           <span class="icon" role="img" aria-label="宣传册图标">📘</span>
           <span class="title">xcareBrochure 仓库</span>
         </a>
       </div>
-      <div class="card">
-        <a href="https://github.com/luoxisg/xcare" class="card-link" data-title-key="card6">
+      <div class="card" data-id="xcare">
+        <a href="/xcare" class="card-link" data-view-link data-url="https://github.com/luoxisg/xcare" data-title-key="card6">
           <span class="icon" role="img" aria-label="书籍图标">📗</span>
           <span class="title">xcare 仓库</span>
         </a>
       </div>
-      <div class="card">
-        <a href="https://github.com/luoxisg/xstellux" class="card-link" data-title-key="card7">
+      <div class="card" data-id="xstellux">
+        <a href="/xstellux" class="card-link" data-view-link data-url="https://github.com/luoxisg/xstellux" data-title-key="card7">
           <span class="icon" role="img" aria-label="星星图标">✨</span>
           <span class="title">xstellux 仓库</span>
         </a>
@@ -430,14 +435,14 @@
 
     <section>
       <h2 data-lang-key="section_tech">技术创新</h2>
-      <div class="card">
-        <a href="https://github.com/luoxisg/Alboxnew" class="card-link" data-title-key="card3">
+      <div class="card" data-id="Alboxnew">
+        <a href="/Alboxnew" class="card-link" data-view-link data-url="https://github.com/luoxisg/Alboxnew" data-title-key="card3">
           <span class="icon" role="img" aria-label="章鱼图标">🐙</span>
           <span class="title">Alboxnew 仓库</span>
         </a>
       </div>
-      <div class="card">
-        <a href="https://github.com/luoxisg/RoboMaster-SDK" class="card-link" data-title-key="card4">
+      <div class="card" data-id="RoboMaster-SDK">
+        <a href="/RoboMaster-SDK" class="card-link" data-view-link data-url="https://github.com/luoxisg/RoboMaster-SDK" data-title-key="card4">
           <span class="icon" role="img" aria-label="机器人图标">🤖</span>
           <span class="title">RoboMaster-SDK 仓库</span>
         </a>
@@ -447,15 +452,13 @@
     <p class="no-results" data-lang-key="no_results">未找到匹配的项目。</p>
   </main>
 
-  <footer>
-    <p id="footer-text">© 2025 LuoxiSG</p>
-  </footer>
+  <footer id="footer-text">© 2025 LuoxiSG</footer>
 
   <div id="project-view">
     <div id="project-header">
       <button id="project-back" aria-label="返回列表">返回</button>
       <nav id="breadcrumb" aria-label="Breadcrumb">
-        <a href="#" id="breadcrumb-home">Home</a>
+        <a href="/" id="breadcrumb-home" data-view-link>Home</a>
         <span>/</span>
         <span id="project-title"></span>
       </nav>
@@ -486,7 +489,6 @@
   </nav>
 
   <script>
-    // 使用 DOMContentLoaded 确保在操作 DOM 前已完全加载
     document.addEventListener('DOMContentLoaded', () => {
       
       // --- 模块化：状态与元素管理 ---
@@ -496,56 +498,22 @@
 | 'zh',
         texts: {
           zh: {
-            header: "项目工作说明",
-            placeholder: "搜索项目…",
-            download: "下载 APK",
-            section_industrial: "工业系统",
-            section_consumer: "消费者系统",
-            section_tech: "技术创新",
-            card1: "三轴喷绘系统工作说明",
-            card2: "裁切系统工作说明",
-            card3: "Alboxnew 仓库",
-            card4: "RoboMaster-SDK 仓库",
-            card5: "xcareBrochure 仓库",
-            card6: "xcare 仓库",
-            card7: "xstellux 仓库",
-            footer: "© 2025 LuoxiSG",
-            chatHeader: "AI 小助手",
-            chatPlaceholder: "请输入问题…",
-            chatSend: "发送",
-            back: "返回",
-            no_results: "未找到匹配的项目。",
-            nav_home: "Home",
-            nav_latest: "Latest",
-            nav_myst: "myST+",
-            nav_epaper: "E-paper",
-            nav_menu: "Menu"
+            header: "项目工作说明", placeholder: "搜索项目…", download: "下载 APK",
+            section_industrial: "工业系统", section_consumer: "消费者系统", section_tech: "技术创新",
+            card1: "三轴喷绘系统工作说明", card2: "裁切系统工作说明", card3: "Alboxnew 仓库",
+            card4: "RoboMaster-SDK 仓库", card5: "xcareBrochure 仓库", card6: "xcare 仓库", card7: "xstellux 仓库",
+            footer: "© 2025 LuoxiSG", chatHeader: "AI 小助手", chatPlaceholder: "请输入问题…", chatSend: "发送",
+            back: "返回", no_results: "未找到匹配的项目。", nav_home: "Home", nav_latest: "Latest",
+            nav_myst: "myST+", nav_epaper: "E-paper", nav_menu: "Menu"
           },
           en: {
-            header: "Project Overview",
-            placeholder: "Search projects…",
-            download: "Download APK",
-            section_industrial: "Industrial Systems",
-            section_consumer: "Consumer Systems",
-            section_tech: "Tech Innovations",
-            card1: "3-Axis Painting System Docs",
-            card2: "Cutting System Docs",
-            card3: "Alboxnew Repo",
-            card4: "RoboMaster SDK Repo",
-            card5: "xcareBrochure Repo",
-            card6: "xcare Repo",
-            card7: "xstellux Repo",
-            footer: "© 2025 LuoxiSG",
-            chatHeader: "AI Assistant",
-            chatPlaceholder: "Type your question…",
-            chatSend: "Send",
-            back: "Back",
-            no_results: "No matching projects found.",
-            nav_home: "Home",
-            nav_latest: "Latest",
-            nav_myst: "myST+",
-            nav_epaper: "E-paper",
-            nav_menu: "Menu"
+            header: "Project Overview", placeholder: "Search projects…", download: "Download APK",
+            section_industrial: "Industrial Systems", section_consumer: "Consumer Systems", section_tech: "Tech Innovations",
+            card1: "3-Axis Painting System Docs", card2: "Cutting System Docs", card3: "Alboxnew Repo",
+            card4: "RoboMaster SDK Repo", card5: "xcareBrochure Repo", card6: "xcare Repo", card7: "xstellux Repo",
+            footer: "© 2025 LuoxiSG", chatHeader: "AI Assistant", chatPlaceholder: "Type your question…", chatSend: "Send",
+            back: "Back", no_results: "No matching projects found.", nav_home: "Home", nav_latest: "Latest",
+            nav_myst: "myST+", nav_epaper: "E-paper", nav_menu: "Menu"
           }
         }
       };
@@ -610,7 +578,7 @@
         }
       };
 
-      // --- 模块化：搜索过滤功能 ---
+      // --- 模块化：搜索过滤功能 (已修复) ---
       const searchManager = {
         init() {
           DOMElements.searchInput.addEventListener('input', () => this.filter());
@@ -628,47 +596,51 @@
         }
       };
 
-      // --- 模块化：内嵌视图管理器 ---
-      const viewManager = {
+      // --- 模块化：客户端路由 (新功能) ---
+      const router = {
         init() {
-          // 使用事件委托，提高性能
-          DOMElements.mainView.addEventListener('click', (e) => {
-            const link = e.target.closest('.card-link');
+          // 拦截所有标记为 data-view-link 的链接点击
+          document.body.addEventListener('click', e => {
+            const link = e.target.closest('a[data-view-link]');
             if (link) {
               e.preventDefault();
-              this.showProject(link.href, link.querySelector('.title').textContent);
+              this.navigate(link.href);
             }
           });
-
-          DOMElements.projectFrame.addEventListener('load', () => this.hideSkeleton());
-          DOMElements.projectBack.addEventListener('click', () => this.hideProject());
-          DOMElements.breadcrumbHome.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.hideProject();
-          });
+          DOMElements.projectBack.addEventListener('click', () => history.back());
+          window.addEventListener('popstate', () => this.handleLocation());
+          this.handleLocation(); // 处理初始页面加载
         },
-        showProject(url, title) {
-          DOMElements.skeleton.style.display = 'block';
-          DOMElements.projectTitle.textContent = title;
-          DOMElements.projectFrame.src = 'about:blank'; // 清空旧内容
-          setTimeout(() => { DOMElements.projectFrame.src = url; }, 50); // 延迟加载以显示骨架
-          DOMElements.mainView.style.display = 'none';
-          DOMElements.projectView.style.display = 'flex';
+        navigate(url) {
+          history.pushState({}, '', url);
+          this.handleLocation();
         },
-        hideProject() {
-          DOMElements.projectFrame.src = 'about:blank';
-          DOMElements.projectView.style.display = 'none';
-          DOMElements.mainView.style.display = 'block';
-        },
-        hideSkeleton() {
-          DOMElements.skeleton.style.display = 'none';
+        handleLocation() {
+          const path = window.location.pathname;
+          if (path === '/') {
+            viewManager.showListView();
+          } else {
+            const cardId = path.substring(1);
+            const cardLink = document.querySelector(`.card[data-id="${cardId}"].card-link`);
+            if (cardLink) {
+              const url = cardLink.dataset.url;
+              const title = cardLink.querySelector('.title').textContent;
+              viewManager.showProjectView(url, title);
+            } else {
+              // 如果找不到对应的卡片，可以导航到首页或404页面
+              this.navigate('/');
+            }
+          }
         }
       };
 
-      // --- 模块化：AI 聊天框功能 ---
-      const chatBot = {
-        init() {
-          DOMElements.chatToggle.addEventListener('click', () => this.toggle(true));
-          DOMElements.chatClose.addEventListener('click', () => this.toggle(false));
-          DOMElements.chatSend.addEventListener('click', () => this.sendMessage());
-          DOMElements.chatInput.addEvent
+      // --- 模块化：视图管理器 (新功能) ---
+      const viewManager = {
+        showListView() {
+          DOMElements.projectView.style.display = 'none';
+          DOMElements.mainView.style.display = 'block';
+          document.title = state.texts[state.lang].header;
+        },
+        showProjectView(url, title) {
+          DOMElements.mainView.style.display = 'none';
+          DOMElements.projectView.style.display =
