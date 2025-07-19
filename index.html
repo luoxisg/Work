@@ -16,11 +16,11 @@
       --nav-text: #888888;
       --nav-active: #4FC3F7;
     }
-    /* 全局样式 */
+    /* 全局 */
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg);
+      background: var(--bg);
       color: var(--text);
       display: flex;
       flex-direction: column;
@@ -28,16 +28,28 @@
       position: relative;
     }
     header {
-      background-color: var(--header-bg);
-      color: var(--text);
-      text-align: center;
+      background: var(--header-bg);
       padding: 1rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
       position: relative;
+      text-align: center;
+    }
+    #header-title {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    #search {
+      margin: 0.5rem auto;
+      width: 60%;
+      max-width: 300px;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
     }
     #lang-toggle {
       position: absolute;
-      top: 0.75rem;
+      top: 1rem;
       right: 1rem;
       background: transparent;
       border: none;
@@ -48,52 +60,61 @@
     main {
       flex: 1;
       padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 56px; /* 底部导航留空 */
+      margin-bottom: 56px;
     }
+    /* 卡片 */
     .card {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       background: var(--card-bg);
       border-radius: 8px;
       margin-bottom: 1rem;
       box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-      transition: transform 0.2s;
       cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
     }
-    .card:hover {
-      transform: translateY(-2px);
+    .card:active {
+      background: #2a2a2a;
+      transform: translateY(1px);
+    }
+    .card .icon {
+      font-size: 1.2rem;
+      padding-left: 1rem;
     }
     .card .title {
-      display: block;
-      padding: 1.25rem;
+      flex: 1;
+      padding: 1.25rem 0;
       color: var(--link);
-      font-size: 1.1rem;
       text-decoration: none;
+      font-size: 1.1rem;
     }
     /* 下载按钮 */
     #download-section {
       text-align: center;
-      padding: 1rem;
-      background: var(--card-bg);
-      border-radius: 8px;
       margin-bottom: 1rem;
     }
     #download-btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: var(--card-bg);
+      border-radius: 8px;
       color: var(--link);
-      font-size: 1rem;
       text-decoration: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      transition: background 0.2s;
     }
+    #download-btn:active { background: #2a2a2a; }
     footer {
       text-align: center;
       padding: 0.5rem;
       font-size: 0.8rem;
       color: var(--text);
     }
-    /* 内嵌视图 */
+    /* 内嵌视图 + 骨架屏 */
     #project-view {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%; height: 100%;
       background: var(--bg);
       display: none;
@@ -103,41 +124,70 @@
     #project-header {
       background: var(--header-bg);
       color: var(--text);
-      padding: 0.75rem; display: flex; align-items: center;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     #project-back {
-      border: none; background: transparent;
-      color: var(--text); font-size: 1rem;
-      cursor: pointer; margin-right: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
     }
-    #project-frame { flex: 1; border: none; background: var(--bg); }
+    #breadcrumb {
+      font-size: 0.9rem;
+    }
+    #breadcrumb a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    #breadcrumb span {
+      margin: 0 0.25rem;
+    }
+    #skeleton {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #1f1f1f;
+      animation: pulse 1.5s infinite;
+      z-index: 950;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    #project-frame {
+      flex: 1;
+      border: none;
+      background: var(--bg);
+    }
     /* AI Chatbox */
     #chat-toggle {
       position: fixed; bottom: 72px; right: 1rem;
       width: 56px; height: 56px;
-      background-color: var(--link); border-radius: 50%;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      cursor: pointer; display: flex;
-      align-items: center; justify-content: center;
-      color: #000; font-size: 28px; z-index: 1000;
+      background: var(--link); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; color: #000; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); z-index: 1000;
     }
     #chat-box {
       position: fixed; bottom: 72px; right: 1rem;
       width: 300px; max-height: 400px;
       background: var(--card-bg); border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      display: none; flex-direction: column;
-      overflow: hidden; z-index: 1000;
+      display: none; flex-direction: column; overflow: hidden;
+      z-index: 1000;
     }
     #chat-header, #chat-input {
       background: var(--header-bg); color: var(--text);
-      padding: 0.5rem; display: flex;
-      justify-content: space-between; align-items: center;
+      padding: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
     }
     #chat-messages {
-      flex: 1; padding: 0.5rem;
-      overflow-y: auto; font-size: 0.9rem;
-      color: var(--text);
+      flex: 1; padding: 0.5rem; overflow-y: auto;
+      font-size: 0.9rem; color: var(--text);
     }
     .msg { margin-bottom: 0.75rem; }
     .msg.user { text-align: right; }
@@ -152,21 +202,23 @@
       position: fixed; bottom: 0; left: 0;
       width: 100%; height: 56px;
       background: var(--nav-bg);
-      display: flex; justify-content: space-around;
-      align-items: center; box-shadow: 0 -1px 4px rgba(0,0,0,0.5);
-      z-index: 950;
+      display: flex; justify-content: space-around; align-items: center;
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.5); z-index: 950;
     }
     #bottom-nav a {
       text-align: center; font-size: 0.75rem;
       color: var(--nav-text); text-decoration: none;
     }
     #bottom-nav a.active { color: var(--nav-active); }
-    #bottom-nav .icon { display: block; font-size: 1.25rem; }
+    #bottom-nav .icon {
+      display: block; font-size: 1.25rem;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1 id="header-title">项目工作说明</h1>
+    <input type="text" id="search" placeholder="搜索项目…"/>
     <button id="lang-toggle">EN</button>
   </header>
 
@@ -175,36 +227,48 @@
       <a id="download-btn" href="https://luoxisg.github.io/downloads/lxwork.apk" download>下载 APK</a>
     </div>
     <div class="card" data-url="https://luoxisg.github.io/paint/">
+      <span class="icon">📄</span>
       <span class="title" id="card1">三轴喷绘系统工作说明</span>
     </div>
     <div class="card" data-url="https://luoxisg.github.io/cutting/">
+      <span class="icon">✂️</span>
       <span class="title" id="card2">裁切系统工作说明</span>
     </div>
     <div class="card" data-url="https://github.com/luoxisg/Alboxnew">
+      <span class="icon">🐙</span>
       <span class="title" id="card3">Alboxnew 仓库</span>
     </div>
     <div class="card" data-url="https://github.com/luoxisg/RoboMaster-SDK">
+      <span class="icon">🤖</span>
       <span class="title" id="card4">RoboMaster-SDK 仓库</span>
     </div>
     <div class="card" data-url="https://github.com/luoxisg/xcareBrochure">
+      <span class="icon">📘</span>
       <span class="title" id="card5">xcareBrochure 仓库</span>
     </div>
     <div class="card" data-url="https://github.com/luoxisg/xcare">
+      <span class="icon">📗</span>
       <span class="title" id="card6">xcare 仓库</span>
     </div>
     <div class="card" data-url="https://github.com/luoxisg/xstellux">
+      <span class="icon">✨</span>
       <span class="title" id="card7">xstellux 仓库</span>
     </div>
   </main>
 
   <footer id="footer-text">© 2025 LuoxiSG</footer>
 
-  <!-- 内嵌视图 -->
+  <!-- 内嵌视图 + 骨架 -->
   <div id="project-view">
     <div id="project-header">
       <button id="project-back">返回</button>
-      <span id="project-title"></span>
+      <nav id="breadcrumb">
+        <a href="#" onclick="backToList()">Home</a>
+        <span>/</span>
+        <span id="project-title"></span>
+      </nav>
     </div>
+    <div id="skeleton"></div>
     <iframe id="project-frame"></iframe>
   </div>
 
@@ -232,9 +296,12 @@
   </nav>
 
   <script>
+    // 文案中英文
     const texts = {
       zh: {
         header: "项目工作说明",
+        placeholder: "搜索项目…",
+        download: "下载 APK",
         card1: "三轴喷绘系统工作说明",
         card2: "裁切系统工作说明",
         card3: "Alboxnew 仓库",
@@ -250,6 +317,8 @@
       },
       en: {
         header: "Project Overview",
+        placeholder: "Search projects…",
+        download: "Download APK",
         card1: "3-Axis Painting System Docs",
         card2: "Cutting System Docs",
         card3: "Alboxnew Repo",
@@ -264,38 +333,73 @@
         back: "Back"
       }
     };
-    let lang = 'zh';
+    let lang = localStorage.getItem('lang') || 'zh';
 
-    document.getElementById('lang-toggle').addEventListener('click', () => {
-      lang = lang === 'zh' ? 'en' : 'zh';
-      updateTexts();
-      document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : '中';
-    });
+    // 元素
+    const headerTitle = document.getElementById('header-title');
+    const searchInput = document.getElementById('search');
+    const langToggle = document.getElementById('lang-toggle');
+    const downloadBtn = document.getElementById('download-btn');
+    const footerText = document.getElementById('footer-text');
+    const chatHeader = document.getElementById('chat-header-text');
+    const chatText = document.getElementById('chat-text');
+    const chatSend = document.getElementById('chat-send');
+    const projectBack = document.getElementById('project-back');
+    const projectFrame = document.getElementById('project-frame');
+    const skeleton = document.getElementById('skeleton');
+
     function updateTexts() {
-      document.getElementById('header-title').textContent = texts[lang].header;
+      headerTitle.textContent = texts[lang].header;
+      searchInput.placeholder = texts[lang].placeholder;
+      downloadBtn.textContent = texts[lang].download;
+      footerText.textContent = texts[lang].footer;
+      chatHeader.textContent = texts[lang].chatHeader;
+      chatText.placeholder = texts[lang].chatPlaceholder;
+      chatSend.textContent = texts[lang].chatSend;
+      projectBack.textContent = texts[lang].back;
       for (let i = 1; i <= 7; i++) {
         document.getElementById(`card${i}`).textContent = texts[lang][`card${i}`];
       }
-      document.getElementById('footer-text').textContent = texts[lang].footer;
-      document.getElementById('chat-header-text').textContent = texts[lang].chatHeader;
-      document.getElementById('chat-text').placeholder = texts[lang].chatPlaceholder;
-      document.getElementById('chat-send').textContent = texts[lang].chatSend;
-      document.getElementById('project-back').textContent = texts[lang].back;
+      langToggle.textContent = lang === 'zh' ? 'EN' : '中';
     }
 
+    // 语言切换
+    langToggle.addEventListener('click', () => {
+      lang = lang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', lang);
+      updateTexts();
+    });
+
+    // 搜索
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        const txt = card.querySelector('.title').textContent.toLowerCase();
+        card.style.display = txt.includes(q) ? 'flex' : 'none';
+      });
+    });
+
+    // 项目内嵌 + 骨架
+    function backToList() {
+      projectFrame.src = '';
+      document.getElementById('project-view').style.display = 'none';
+      document.getElementById('list-view').style.display = 'block';
+    }
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('click', () => {
-        document.getElementById('project-title').textContent = card.querySelector('.title').textContent;
-        document.getElementById('project-frame').src = card.dataset.url;
+        skeleton.style.display = 'block';
+        backToList(); // 重置视图
+        const title = card.querySelector('.title').textContent;
+        document.getElementById('project-title').textContent = title;
+        projectFrame.src = card.dataset.url;
         document.getElementById('list-view').style.display = 'none';
         document.getElementById('project-view').style.display = 'flex';
       });
     });
-    document.getElementById('project-back').addEventListener('click', () => {
-      document.getElementById('project-frame').src = '';
-      document.getElementById('project-view').style.display = 'none';
-      document.getElementById('list-view').style.display = 'flex';
+    projectFrame.addEventListener('load', () => {
+      skeleton.style.display = 'none';
     });
+    projectBack.addEventListener('click', backToList);
 
     // AI Chatbox
     const toggle = document.getElementById('chat-toggle');
@@ -318,13 +422,13 @@
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text })
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({message: text})
         });
-        const { reply } = await res.json();
+        const {reply} = await res.json();
         appendMsg('ai', reply);
       } catch {
-        appendMsg('ai', lang === 'zh' ? '请求失败，请稍后重试。' : 'Request failed.');
+        appendMsg('ai', lang==='zh'?'请求失败，请稍后重试。':'Request failed.');
       }
     }
     function appendMsg(who, txt) {
