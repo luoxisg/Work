@@ -16,7 +16,6 @@
       --nav-text: #888888;
       --nav-active: #4FC3F7;
     }
-
     /* 全局样式 */
     body {
       margin: 0;
@@ -36,7 +35,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
       position: relative;
     }
-    /* 语言切换按钮 */
     #lang-toggle {
       position: absolute;
       top: 0.75rem;
@@ -52,7 +50,7 @@
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      margin-bottom: 56px; /* 为底部导航留空 */
+      margin-bottom: 56px; /* 底部导航留空 */
     }
     .card {
       background: var(--card-bg);
@@ -72,14 +70,26 @@
       font-size: 1.1rem;
       text-decoration: none;
     }
+    /* 下载按钮 */
+    #download-section {
+      text-align: center;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    #download-btn {
+      color: var(--link);
+      font-size: 1rem;
+      text-decoration: none;
+    }
     footer {
       text-align: center;
       padding: 0.5rem;
       font-size: 0.8rem;
       color: var(--text);
     }
-
-    /* 项目视图（iframe + 返回） */
+    /* 项目内嵌视图 */
     #project-view {
       position: absolute;
       top: 0;
@@ -111,7 +121,6 @@
       border: none;
       background: var(--bg);
     }
-
     /* AI Chatbox */
     #chat-toggle {
       position: fixed;
@@ -189,7 +198,6 @@
       padding: 0 1rem;
       cursor: pointer;
     }
-
     /* 底部导航 */
     #bottom-nav {
       position: fixed;
@@ -226,10 +234,15 @@
   </header>
 
   <main id="list-view">
-    <div class="card" data-url="https://luoxisg.github.io/paint/">
+    <!-- 下载 APK -->
+    <div id="download-section">
+      <a id="download-btn" href="https://luoxisg.github.io/downloads/lxwork.apk" download>下载 APK</a>
+    </div>
+
+    <div class="card" data-url="https://luoxisg.github.io/Paint/">
       <span class="title" id="card1">三轴喷绘系统工作说明</span>
     </div>
-    <div class="card" data-url="https://luoxisg.github.io/cutting/">
+    <div class="card" data-url="https://luoxisg.github.io/Cutting/">
       <span class="title" id="card2">裁切系统工作说明</span>
     </div>
     <div class="card" data-url="https://github.com/luoxisg/Alboxnew">
@@ -248,7 +261,7 @@
 
   <footer id="footer-text">© 2025 LuoxiSG</footer>
 
-  <!-- 内嵌项目视图 -->
+  <!-- 项目内嵌视图 -->
   <div id="project-view">
     <div id="project-header">
       <button id="project-back">返回</button>
@@ -281,7 +294,7 @@
   </nav>
 
   <script>
-    // 文案中英文对照
+    // 中英文文案
     const texts = {
       zh: {
         header: "项目工作说明",
@@ -314,9 +327,9 @@
     };
     let lang = 'zh';
 
-    // 切换中英文
+    // 切换语言
     document.getElementById('lang-toggle').addEventListener('click', () => {
-      lang = (lang === 'zh' ? 'en' : 'zh');
+      lang = lang === 'zh' ? 'en' : 'zh';
       updateTexts();
       document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : '中';
     });
@@ -360,12 +373,12 @@
     toggle.addEventListener('click', () => box.style.display = 'flex');
     closeBtn.addEventListener('click', () => box.style.display = 'none');
     sendBtn.addEventListener('click', sendMessage);
-    input.addEventListener('keypress', e => e.key === 'Enter' && sendMessage());
+    input.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
 
     async function sendMessage() {
       const text = input.value.trim();
       if (!text) return;
-      append('user', text);
+      appendMsg('user', text);
       input.value = '';
       try {
         const res = await fetch('/api/chat', {
@@ -374,12 +387,12 @@
           body: JSON.stringify({message: text})
         });
         const {reply} = await res.json();
-        append('ai', reply);
+        appendMsg('ai', reply);
       } catch {
-        append('ai', lang==='zh'?'请求失败，请稍后重试。':'Request failed, please try again.');
+        appendMsg('ai', lang==='zh'?'请求失败，请稍后重试。':'Request failed.');
       }
     }
-    function append(who, txt) {
+    function appendMsg(who, txt) {
       const msg = document.createElement('div');
       msg.className = `msg ${who}`;
       const b = document.createElement('div');
@@ -390,7 +403,7 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
-    // 初始渲染
+    // 初始文案渲染
     updateTexts();
   </script>
 </body>
