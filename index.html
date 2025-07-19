@@ -1,53 +1,85 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>项目工作说明</title>
   <style>
-    /* 全局样式重置及字体 */ 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background-color: #f5f5f5;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
+    /* 原有样式省略… */
+
+    /* AI Chatbox 样式 */
+    #chat-toggle {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      width: 56px;
+      height: 56px;
       background-color: #0078d7;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #fff;
-      text-align: center;
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-size: 28px;
+      z-index: 1000;
     }
-    main {
-      flex: 1;
-      padding: 1rem;
-    }
-    .card {
+    #chat-box {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      width: 300px;
+      max-height: 400px;
       background: #fff;
       border-radius: 8px;
-      margin-bottom: 1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
     }
-    .card:hover {
-      transform: translateY(-2px);
+    #chat-header {
+      background: #0078d7;
+      color: #fff;
+      padding: 0.5rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .card a {
-      display: block;
-      padding: 1.25rem;
-      text-decoration: none;
-      color: #0078d7;
-      font-size: 1.1rem;
-    }
-    footer {
-      text-align: center;
-      padding: 0.75rem;
+    #chat-messages {
+      flex: 1;
+      padding: 0.5rem;
+      overflow-y: auto;
       font-size: 0.9rem;
-      color: #777;
+    }
+    .msg { margin-bottom: 0.75rem; }
+    .msg.user { text-align: right; }
+    .msg .bubble {
+      display: inline-block;
+      padding: 0.5rem;
+      border-radius: 12px;
+      max-width: 80%;
+    }
+    .msg.user .bubble { background: #0078d7; color: #fff; }
+    .msg.ai .bubble { background: #f1f1f1; color: #333; }
+    #chat-input {
+      display: flex;
+      border-top: 1px solid #e0e0e0;
+    }
+    #chat-input input {
+      flex: 1;
+      border: none;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+    #chat-input button {
+      border: none;
+      background: #0078d7;
+      color: #fff;
+      padding: 0 1rem;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -66,17 +98,75 @@
         裁切系统工作说明
       </a>
     </div>
-    <!-- 如需链接 PDF，可取消下面注释并修改 href -->
-    <!--
-    <div class="card">
-      <a href="docs/Selection.pdf" target="_blank">
-        喷绘系统博士级选型说明（PDF）
-      </a>
-    </div>
-    -->
   </main>
   <footer>
     © 2025 LuoxiSG
   </footer>
+
+  <!-- AI Chatbox Toggle 按钮 -->
+  <div id="chat-toggle">💬</div>
+
+  <!-- AI Chatbox 窗口 -->
+  <div id="chat-box">
+    <div id="chat-header">
+      AI 小助手
+      <span id="chat-close" style="cursor:pointer;">✖️</span>
+    </div>
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+      <input type="text" id="chat-text" placeholder="请输入问题…" />
+      <button id="chat-send">发送</button>
+    </div>
+  </div>
+
+  <script>
+    // 元素引用
+    const toggle = document.getElementById('chat-toggle');
+    const box = document.getElementById('chat-box');
+    const closeBtn = document.getElementById('chat-close');
+    const messages = document.getElementById('chat-messages');
+    const input = document.getElementById('chat-text');
+    const sendBtn = document.getElementById('chat-send');
+
+    // 展开/收起
+    toggle.addEventListener('click', () => box.style.display = 'flex');
+    closeBtn.addEventListener('click', () => box.style.display = 'none');
+
+    // 发送消息
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      appendMessage('user', text);
+      input.value = '';
+      // 请求后端 AI 接口
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await res.json();
+        appendMessage('ai', data.reply);
+      } catch (err) {
+        appendMessage('ai', '请求失败，请稍后重试。');
+        console.error(err);
+      }
+    }
+
+    // 渲染消息
+    function appendMessage(who, text) {
+      const msg = document.createElement('div');
+      msg.className = `msg ${who}`;
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      msg.appendChild(bubble);
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
 </body>
 </html>
