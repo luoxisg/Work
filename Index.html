@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>项目工作说明</title>
+  <style>
+    /* 全局样式重置及字体 */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #0078d7;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    main {
+      flex: 1;
+      padding: 1rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+    }
+    .card a {
+      display: block;
+      padding: 1.25rem;
+      text-decoration: none;
+      color: #0078d7;
+      font-size: 1.1rem;
+    }
+    footer {
+      text-align: center;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>项目工作说明</h1>
+  </header>
+  <main>
+    <div class="card">
+      <a href="https://luoxisg.github.io/paint/" target="_blank">
+        三轴喷绘系统工作说明
+      </a>
+    </div>
+    <div class="card">
+      <a href="https://luoxisg.github.io/cutting/" target="_blank">
+        裁切系统工作说明
+      </a>
+    </div>
+    <!-- 如需链接 PDF，可取消下面注释并修改 href -->
+    <!--
+    <div class="card">
+      <a href="docs/Selection.pdf" target="_blank">
+        喷绘系统博士级选型说明（PDF）
+      </a>
+    </div>
+    -->
+  </main>
+  <footer>
+    © 2025 LuoxiSG
+  </footer>
+</body>
+</html>
