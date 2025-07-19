@@ -5,23 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>项目工作说明</title>
   <style>
-    /* 主题色定义 */
+    /* --- 根变量与全局样式 --- */
     :root {
       --bg: #121212;
       --header-bg: #1F1F1F;
-      --section-bg: #1A1A1A;
       --card-bg: #1F1F1F;
       --text: #E0E0E0;
+      --text-muted: #888888;
       --link: #4FC3F7;
       --link-hover: #80D8FF;
       --nav-bg: #1F1F1F;
-      --nav-text: #888888;
       --nav-active: #4FC3F7;
+      --shadow-color: rgba(0,0,0,0.5);
+      --border-radius: 8px;
     }
-    /* 全局 */
+
+    /* 全局重置与基础设置 */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       display: flex;
@@ -29,106 +35,167 @@
       min-height: 100vh;
       position: relative;
     }
+
+    /* 增强的可访问性：为键盘导航添加清晰的焦点样式 */
+    :focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+
+    /* --- 布局组件 --- */
     header {
       background: var(--header-bg);
       padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      position: relative;
+      box-shadow: 0 2px 4px var(--shadow-color);
+      position: sticky;
+      top: 0;
+      z-index: 800;
       text-align: center;
     }
+
+    main {
+      flex: 1;
+      padding: 1rem;
+      margin-bottom: 56px; /* 为底部导航留出空间 */
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    /* --- UI 元素 --- */
     #header-title {
       margin: 0;
       font-size: 1.5rem;
     }
+
     #search {
       margin: 0.5rem auto;
-      width: 60%;
+      width: 80%;
       max-width: 300px;
       padding: 0.5rem;
-      border: none;
-      border-radius: 4px;
+      border: 1px solid var(--text-muted);
+      border-radius: var(--border-radius);
       font-size: 1rem;
+      background-color: var(--bg);
+      color: var(--text);
     }
+
     #lang-toggle {
       position: absolute;
       top: 1rem;
       right: 1rem;
       background: transparent;
-      border: none;
+      border: 1px solid var(--text-muted);
+      border-radius: 4px;
       color: var(--text);
       font-size: 1rem;
       cursor: pointer;
+      padding: 0.25rem 0.5rem;
     }
-    main {
-      flex: 1;
-      padding: 1rem;
-      margin-bottom: 56px;
-    }
-    section {
-      margin-bottom: 2rem;
-    }
-    section h2 {
-      margin: 1rem 0 0.5rem;
-      font-size: 1.2rem;
-      color: var(--link);
-    }
-    /* 卡片 */
-    .card {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: var(--card-bg);
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .card:active {
-      background: #2a2a2a;
-      transform: translateY(1px);
-    }
-    .card .icon {
-      font-size: 1.2rem;
-      padding-left: 1rem;
-    }
-    .card .title {
-      flex: 1;
-      padding: 1.25rem 0;
-      color: var(--link);
-      text-decoration: none;
-      font-size: 1.1rem;
-    }
-    .card .title:hover {
-      color: var(--link-hover);
-    }
-    /* 下载 */
-    #download-section {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
+
     #download-btn {
       display: inline-block;
       padding: 0.75rem 1.5rem;
       background: var(--card-bg);
-      border-radius: 8px;
+      border-radius: var(--border-radius);
       color: var(--link);
       text-decoration: none;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      box-shadow: 0 1px 3px var(--shadow-color);
       transition: background 0.2s;
+      margin-bottom: 1rem;
     }
-    #download-btn:active {
+    #download-btn:hover {
       background: #2a2a2a;
     }
-    footer {
-      text-align: center;
-      padding: 0.5rem;
-      font-size: 0.8rem;
-      color: var(--text);
+
+    section h2 {
+      margin: 1rem 0 0.5rem;
+      font-size: 1.2rem;
+      color: var(--link);
+      border-bottom: 1px solid var(--text-muted);
+      padding-bottom: 0.5rem;
     }
-    /* 内嵌视图 + 骨架 */
+
+   .card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px var(--shadow-color);
+      transition: background 0.2s, transform 0.1s;
+      overflow: hidden; /* 确保子元素圆角 */
+    }
+   .card:hover {
+      transform: translateY(-2px);
+    }
+
+   .card-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--link);
+      padding: 1.25rem 1rem;
+    }
+   .card-link:hover {
+      color: var(--link-hover);
+      background: #2a2a2a;
+    }
+
+   .card.icon {
+      font-size: 1.5rem;
+    }
+
+   .card.title {
+      flex: 1;
+      font-size: 1.1rem;
+    }
+    
+   .no-results {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      display: none; /* 默认隐藏 */
+    }
+
+    /* --- 底部导航 --- */
+    #bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 56px;
+      background: var(--nav-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -1px 4px var(--shadow-color);
+      z-index: 950;
+    }
+    #bottom-nav a {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.25rem;
+      border-radius: 4px;
+    }
+    #bottom-nav a.active { color: var(--nav-active); }
+    #bottom-nav.icon {
+      display: block;
+      font-size: 1.25rem;
+    }
+
+    /* --- 内嵌视图 & 骨架加载 --- */
     #project-view {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -136,8 +203,10 @@
       background: var(--bg);
       display: none;
       flex-direction: column;
-      z-index: 900;
+      z-index: 1100;
+      animation: fadeIn 0.3s ease-in-out;
     }
+
     #project-header {
       background: var(--header-bg);
       color: var(--text);
@@ -145,46 +214,59 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      flex-shrink: 0;
     }
+
     #project-back {
       background: transparent;
-      border: none;
+      border: 1px solid var(--text-muted);
+      border-radius: 4px;
       color: var(--text);
       font-size: 1rem;
       cursor: pointer;
+      padding: 0.25rem 0.5rem;
     }
+
     #breadcrumb {
       font-size: 0.9rem;
       flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    #breadcrumb a {
-      color: var(--link);
-      text-decoration: none;
-    }
-    #breadcrumb span {
-      margin: 0 0.25rem;
-    }
+    #breadcrumb a { color: var(--link); text-decoration: none; }
+    #breadcrumb span { margin: 0 0.25rem; }
+
     #skeleton {
-      display: none;
+      display: block; /* 默认显示，由JS控制 */
       position: absolute;
-      top: 0;
+      top: 50px; /* 假设header高度 */
       left: 0;
       width: 100%;
-      height: 100%;
-      background: #1f1f1f;
-      animation: pulse 1.5s infinite;
+      height: calc(100% - 50px);
+      background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
+      background-size: 200% 100%;
+      animation: pulse 1.5s infinite linear;
       z-index: 950;
     }
+
     @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     #project-frame {
       flex: 1;
       border: none;
       background: var(--bg);
     }
-    /* AI Chatbox */
+
+    /* --- AI 聊天框 --- */
     #chat-toggle {
       position: fixed;
       bottom: 72px;
@@ -201,70 +283,98 @@
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
       z-index: 1000;
+      border: none;
     }
+
     #chat-box {
       position: fixed;
       bottom: 72px;
       right: 1rem;
-      width: 300px;
-      max-height: 400px;
+      width: 90%;
+      max-width: 320px;
+      height: 70%;
+      max-height: 450px;
       background: var(--card-bg);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px var(--shadow-color);
       display: none;
       flex-direction: column;
       overflow: hidden;
       z-index: 1000;
+      animation: fadeIn 0.3s;
     }
-    #chat-header, #chat-input {
-      background: var(--header-bg);
-      color: var(--text);
-      padding: 0.5rem;
+
+    #chat-header {
+      padding: 0.75rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: space-between;
+      background: var(--header-bg);
+      flex-shrink: 0;
     }
+    
+    #chat-close {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
     #chat-messages {
       flex: 1;
-      padding: 0.5rem;
+      padding: 0.75rem;
       overflow-y: auto;
       font-size: 0.9rem;
       color: var(--text);
     }
-    .msg { margin-bottom: 0.75rem; }
-    .msg.user { text-align: right; }
-    .bubble {
-      display: inline-block;
-      padding: 0.5rem;
-      border-radius: 12px;
-      max-width: 80%;
-    }
-    .msg.user .bubble { background: var(--link); color: #000; }
-    .msg.ai .bubble { background: #333; color: var(--text); }
-    /* 底部导航 */
-    #bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 56px;
-      background: var(--nav-bg);
+
+   .msg { 
+      margin-bottom: 0.75rem; 
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 -1px 4px rgba(0,0,0,0.5);
-      z-index: 950;
     }
-    #bottom-nav a {
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--nav-text);
-      text-decoration: none;
+   .msg.user { justify-content: flex-end; }
+   .msg.ai { justify-content: flex-start; }
+   .msg.typing {
+      font-style: italic;
+      color: var(--text-muted);
     }
-    #bottom-nav a.active { color: var(--nav-active); }
-    #bottom-nav .icon {
-      display: block;
-      font-size: 1.25rem;
+
+   .bubble {
+      display: inline-block;
+      padding: 0.5rem 0.75rem;
+      border-radius: 12px;
+      max-width: 85%;
+      line-height: 1.4;
+    }
+   .msg.user.bubble { background: var(--link); color: #000; border-bottom-right-radius: 2px; }
+   .msg.ai.bubble { background: #333; color: var(--text); border-bottom-left-radius: 2px; }
+
+    #chat-input-container {
+      padding: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+      background: var(--header-bg);
+      border-top: 1px solid var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    #chat-text {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid var(--text-muted);
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    #chat-send {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--link);
+      color: #000;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -272,244 +382,293 @@
   <header>
     <h1 id="header-title">项目工作说明</h1>
     <input type="text" id="search" placeholder="搜索项目…"/>
-    <button id="lang-toggle">EN</button>
+    <button id="lang-toggle" aria-label="Toggle Language">EN</button>
   </header>
 
   <main id="list-view">
-    <!-- 下载 APK -->
-    <div id="download-section">
+    <div style="text-align: center;">
       <a id="download-btn" href="https://luoxisg.github.io/downloads/lxwork.apk" download>下载 APK</a>
     </div>
 
-    <!-- 分类: 工业系统 -->
     <section>
-      <h2>工业系统</h2>
-      <div class="card" data-url="https://luoxisg.github.io/paint/">
-        <span class="icon">📄</span>
-        <span class="title" id="card1">三轴喷绘系统工作说明</span>
+      <h2 data-lang-key="section_industrial">工业系统</h2>
+      <div class="card">
+        <a href="https://luoxisg.github.io/paint/" class="card-link" data-title-key="card1">
+          <span class="icon" role="img" aria-label="文档图标">📄</span>
+          <span class="title">三轴喷绘系统工作说明</span>
+        </a>
       </div>
-      <div class="card" data-url="https://luoxisg.github.io/cutting/">
-        <span class="icon">✂️</span>
-        <span class="title" id="card2">裁切系统工作说明</span>
+      <div class="card">
+        <a href="https://luoxisg.github.io/cutting/" class="card-link" data-title-key="card2">
+          <span class="icon" role="img" aria-label="剪刀图标">✂️</span>
+          <span class="title">裁切系统工作说明</span>
+        </a>
       </div>
     </section>
 
-    <!-- 分类: 消费者系统 -->
     <section>
-      <h2>消费者系统</h2>
-      <div class="card" data-url="https://github.com/luoxisg/xcareBrochure">
-        <span class="icon">📘</span>
-        <span class="title" id="card5">xcareBrochure 仓库</span>
+      <h2 data-lang-key="section_consumer">消费者系统</h2>
+      <div class="card">
+        <a href="https://github.com/luoxisg/xcareBrochure" class="card-link" data-title-key="card5">
+          <span class="icon" role="img" aria-label="宣传册图标">📘</span>
+          <span class="title">xcareBrochure 仓库</span>
+        </a>
       </div>
-      <div class="card" data-url="https://github.com/luoxisg/xcare">
-        <span class="icon">📗</span>
-        <span class="title" id="card6">xcare 仓库</span>
+      <div class="card">
+        <a href="https://github.com/luoxisg/xcare" class="card-link" data-title-key="card6">
+          <span class="icon" role="img" aria-label="书籍图标">📗</span>
+          <span class="title">xcare 仓库</span>
+        </a>
       </div>
-      <div class="card" data-url="https://github.com/luoxisg/xstellux">
-        <span class="icon">✨</span>
-        <span class="title" id="card7">xstellux 仓库</span>
+      <div class="card">
+        <a href="https://github.com/luoxisg/xstellux" class="card-link" data-title-key="card7">
+          <span class="icon" role="img" aria-label="星星图标">✨</span>
+          <span class="title">xstellux 仓库</span>
+        </a>
       </div>
     </section>
 
-    <!-- 分类: 技术创新 -->
     <section>
-      <h2>技术创新</h2>
-      <div class="card" data-url="https://github.com/luoxisg/Alboxnew">
-        <span class="icon">🐙</span>
-        <span class="title" id="card3">Alboxnew 仓库</span>
+      <h2 data-lang-key="section_tech">技术创新</h2>
+      <div class="card">
+        <a href="https://github.com/luoxisg/Alboxnew" class="card-link" data-title-key="card3">
+          <span class="icon" role="img" aria-label="章鱼图标">🐙</span>
+          <span class="title">Alboxnew 仓库</span>
+        </a>
       </div>
-      <div class="card" data-url="https://github.com/luoxisg/RoboMaster-SDK">
-        <span class="icon">🤖</span>
-        <span class="title" id="card4">RoboMaster-SDK 仓库</span>
+      <div class="card">
+        <a href="https://github.com/luoxisg/RoboMaster-SDK" class="card-link" data-title-key="card4">
+          <span class="icon" role="img" aria-label="机器人图标">🤖</span>
+          <span class="title">RoboMaster-SDK 仓库</span>
+        </a>
       </div>
     </section>
+    
+    <p class="no-results" data-lang-key="no_results">未找到匹配的项目。</p>
   </main>
 
-  <footer id="footer-text">© 2025 LuoxiSG</footer>
+  <footer>
+    <p id="footer-text">© 2025 LuoxiSG</p>
+  </footer>
 
-  <!-- 内嵌视图 + 骨架 -->
   <div id="project-view">
     <div id="project-header">
-      <button id="project-back">返回</button>
-      <nav id="breadcrumb">
-        <a href="#" onclick="backToList()">Home</a>
+      <button id="project-back" aria-label="返回列表">返回</button>
+      <nav id="breadcrumb" aria-label="Breadcrumb">
+        <a href="#" id="breadcrumb-home">Home</a>
         <span>/</span>
         <span id="project-title"></span>
       </nav>
     </div>
     <div id="skeleton"></div>
-    <iframe id="project-frame"></iframe>
+    <iframe id="project-frame" title="项目内容"></iframe>
   </div>
 
-  <!-- AI Chatbox -->
-  <div id="chat-toggle">💬</div>
-  <div id="chat-box">
-    <div id="chat-header">
+  <button id="chat-toggle" aria-label="打开 AI 助手">💬</button>
+  <div id="chat-box" role="dialog" aria-modal="true" aria-labelledby="chat-header-text">
+    <header id="chat-header">
       <span id="chat-header-text">AI 小助手</span>
-      <span id="chat-close" style="cursor:pointer;">✖️</span>
-    </div>
+      <button id="chat-close" aria-label="关闭聊天框">✖️</button>
+    </header>
     <div id="chat-messages"></div>
-    <div id="chat-input">
+    <div id="chat-input-container">
       <input type="text" id="chat-text" placeholder="请输入问题…"/>
       <button id="chat-send">发送</button>
     </div>
   </div>
 
-  <!-- 底部导航 -->
   <nav id="bottom-nav">
-    <a href="#" class="nav-item active"><span class="icon">🏠</span>Home</a>
-    <a href="#" class="nav-item"><span class="icon">🕒</span>Latest</a>
-    <a href="#" class="nav-item"><span class="icon">⭐</span>myST+</a>
-    <a href="#" class="nav-item"><span class="icon">📄</span>E-paper</a>
-    <a href="#" class="nav-item"><span class="icon">☰</span>Menu</a>
+    <a href="#" class="nav-item active"><span class="icon">🏠</span><span data-lang-key="nav_home">Home</span></a>
+    <a href="#" class="nav-item"><span class="icon">🕒</span><span data-lang-key="nav_latest">Latest</span></a>
+    <a href="#" class="nav-item"><span class="icon">⭐</span><span data-lang-key="nav_myst">myST+</span></a>
+    <a href="#" class="nav-item"><span class="icon">📄</span><span data-lang-key="nav_epaper">E-paper</span></a>
+    <a href="#" class="nav-item"><span class="icon">☰</span><span data-lang-key="nav_menu">Menu</span></a>
   </nav>
 
   <script>
-    const texts = {
-      zh: {
-        header: "项目工作说明",
-        placeholder: "搜索项目…",
-        download: "下载 APK",
-        card1: "三轴喷绘系统工作说明",
-        card2: "裁切系统工作说明",
-        card3: "Alboxnew 仓库",
-        card4: "RoboMaster-SDK 仓库",
-        card5: "xcareBrochure 仓库",
-        card6: "xcare 仓库",
-        card7: "xstellux 仓库",
-        footer: "© 2025 LuoxiSG",
-        chatHeader: "AI 小助手",
-        chatPlaceholder: "请输入问题…",
-        chatSend: "发送",
-        back: "返回"
-      },
-      en: {
-        header: "Project Overview",
-        placeholder: "Search projects…",
-        download: "Download APK",
-        card1: "3-Axis Painting System Docs",
-        card2: "Cutting System Docs",
-        card3: "Alboxnew Repo",
-        card4: "RoboMaster SDK Repo",
-        card5: "xcareBrochure Repo",
-        card6: "xcare Repo",
-        card7: "xstellux Repo",
-        footer: "© 2025 LuoxiSG",
-        chatHeader: "AI Assistant",
-        chatPlaceholder: "Type your question…",
-        chatSend: "Send",
-        back: "Back"
-      }
-    };
-    let lang = localStorage.getItem('lang') || 'zh';
+    // 使用 DOMContentLoaded 确保在操作 DOM 前已完全加载
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // --- 模块化：状态与元素管理 ---
+      const state = {
+        lang: localStorage.getItem('lang') |
 
-    const headerTitle = document.getElementById('header-title');
-    const searchInput = document.getElementById('search');
-    const langToggle = document.getElementById('lang-toggle');
-    const downloadBtn = document.getElementById('download-btn');
-    const footerText = document.getElementById('footer-text');
-    const chatHeader = document.getElementById('chat-header-text');
-    const chatText = document.getElementById('chat-text');
-    const chatSend = document.getElementById('chat-send');
-    const projectBack = document.getElementById('project-back');
-    const projectFrame = document.getElementById('project-frame');
-    const skeleton = document.getElementById('skeleton');
+| 'zh',
+        texts: {
+          zh: {
+            header: "项目工作说明",
+            placeholder: "搜索项目…",
+            download: "下载 APK",
+            section_industrial: "工业系统",
+            section_consumer: "消费者系统",
+            section_tech: "技术创新",
+            card1: "三轴喷绘系统工作说明",
+            card2: "裁切系统工作说明",
+            card3: "Alboxnew 仓库",
+            card4: "RoboMaster-SDK 仓库",
+            card5: "xcareBrochure 仓库",
+            card6: "xcare 仓库",
+            card7: "xstellux 仓库",
+            footer: "© 2025 LuoxiSG",
+            chatHeader: "AI 小助手",
+            chatPlaceholder: "请输入问题…",
+            chatSend: "发送",
+            back: "返回",
+            no_results: "未找到匹配的项目。",
+            nav_home: "Home",
+            nav_latest: "Latest",
+            nav_myst: "myST+",
+            nav_epaper: "E-paper",
+            nav_menu: "Menu"
+          },
+          en: {
+            header: "Project Overview",
+            placeholder: "Search projects…",
+            download: "Download APK",
+            section_industrial: "Industrial Systems",
+            section_consumer: "Consumer Systems",
+            section_tech: "Tech Innovations",
+            card1: "3-Axis Painting System Docs",
+            card2: "Cutting System Docs",
+            card3: "Alboxnew Repo",
+            card4: "RoboMaster SDK Repo",
+            card5: "xcareBrochure Repo",
+            card6: "xcare Repo",
+            card7: "xstellux Repo",
+            footer: "© 2025 LuoxiSG",
+            chatHeader: "AI Assistant",
+            chatPlaceholder: "Type your question…",
+            chatSend: "Send",
+            back: "Back",
+            no_results: "No matching projects found.",
+            nav_home: "Home",
+            nav_latest: "Latest",
+            nav_myst: "myST+",
+            nav_epaper: "E-paper",
+            nav_menu: "Menu"
+          }
+        }
+      };
 
-    function updateTexts() {
-      headerTitle.textContent = texts[lang].header;
-      searchInput.placeholder = texts[lang].placeholder;
-      downloadBtn.textContent = texts[lang].download;
-      footerText.textContent = texts[lang].footer;
-      chatHeader.textContent = texts[lang].chatHeader;
-      chatText.placeholder = texts[lang].chatPlaceholder;
-      chatSend.textContent = texts[lang].chatSend;
-      projectBack.textContent = texts[lang].back;
-      for (let i = 1; i <= 7; i++) {
-        document.getElementById(`card${i}`).textContent = texts[lang][`card${i}`];
-      }
-      langToggle.textContent = lang === 'zh' ? 'EN' : '中';
-    }
+      const DOMElements = {
+        html: document.documentElement,
+        headerTitle: document.getElementById('header-title'),
+        searchInput: document.getElementById('search'),
+        langToggle: document.getElementById('lang-toggle'),
+        downloadBtn: document.getElementById('download-btn'),
+        footerText: document.getElementById('footer-text'),
+        mainView: document.getElementById('list-view'),
+        projectView: document.getElementById('project-view'),
+        projectFrame: document.getElementById('project-frame'),
+        skeleton: document.getElementById('skeleton'),
+        projectBack: document.getElementById('project-back'),
+        breadcrumbHome: document.getElementById('breadcrumb-home'),
+        projectTitle: document.getElementById('project-title'),
+        chatToggle: document.getElementById('chat-toggle'),
+        chatBox: document.getElementById('chat-box'),
+        chatClose: document.getElementById('chat-close'),
+        chatHeader: document.getElementById('chat-header-text'),
+        chatMessages: document.getElementById('chat-messages'),
+        chatInput: document.getElementById('chat-text'),
+        chatSend: document.getElementById('chat-send'),
+        noResults: document.querySelector('.no-results'),
+        cards: document.querySelectorAll('.card')
+      };
 
-    // 语言切换
-    langToggle.addEventListener('click', () => {
-      lang = lang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('lang', lang);
-      updateTexts();
-    });
+      // --- 模块化：语言切换功能 ---
+      const languageManager = {
+        init() {
+          DOMElements.langToggle.addEventListener('click', () => this.toggle());
+          this.update();
+        },
+        toggle() {
+          state.lang = state.lang === 'zh'? 'en' : 'zh';
+          localStorage.setItem('lang', state.lang);
+          this.update();
+        },
+        update() {
+          const langTexts = state.texts[state.lang];
+          DOMElements.html.lang = state.lang === 'zh'? 'zh-CN' : 'en';
+          DOMElements.headerTitle.textContent = langTexts.header;
+          DOMElements.searchInput.placeholder = langTexts.placeholder;
+          DOMElements.downloadBtn.textContent = langTexts.download;
+          DOMElements.footerText.textContent = langTexts.footer;
+          DOMElements.chatHeader.textContent = langTexts.chatHeader;
+          DOMElements.chatInput.placeholder = langTexts.chatPlaceholder;
+          DOMElements.chatSend.textContent = langTexts.chatSend;
+          DOMElements.projectBack.textContent = langTexts.back;
+          DOMElements.noResults.textContent = langTexts.no_results;
+          
+          document.querySelectorAll('[data-title-key]').forEach(el => {
+            el.querySelector('.title').textContent = langTexts[el.dataset.titleKey];
+          });
+          document.querySelectorAll('[data-lang-key]').forEach(el => {
+            el.textContent = langTexts[el.dataset.langKey];
+          });
 
-    // 搜索
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.trim().toLowerCase();
-      document.querySelectorAll('.card').forEach(card => {
-        const txt = card.querySelector('.title').textContent.toLowerCase();
-        card.style.display = txt.includes(q) ? 'flex' : 'none';
-      });
-    });
+          DOMElements.langToggle.textContent = state.lang === 'zh'? 'EN' : '中';
+        }
+      };
 
-    // 内嵌视图 & 骨架
-    function backToList() {
-      projectFrame.src = '';
-      document.getElementById('project-view').style.display = 'none';
-      document.getElementById('list-view').style.display = 'block';
-    }
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', () => {
-        skeleton.style.display = 'block';
-        const title = card.querySelector('.title').textContent;
-        document.getElementById('project-title').textContent = title;
-        projectFrame.src = card.dataset.url;
-        document.getElementById('list-view').style.display = 'none';
-        document.getElementById('project-view').style.display = 'flex';
-      });
-    });
-    projectFrame.addEventListener('load', () => {
-      skeleton.style.display = 'none';
-    });
-    projectBack.addEventListener('click', backToList);
+      // --- 模块化：搜索过滤功能 ---
+      const searchManager = {
+        init() {
+          DOMElements.searchInput.addEventListener('input', () => this.filter());
+        },
+        filter() {
+          const query = DOMElements.searchInput.value.trim().toLowerCase();
+          let visibleCount = 0;
+          DOMElements.cards.forEach(card => {
+            const title = card.querySelector('.title').textContent.toLowerCase();
+            const isVisible = title.includes(query);
+            card.style.display = isVisible? 'block' : 'none';
+            if (isVisible) visibleCount++;
+          });
+          DOMElements.noResults.style.display = visibleCount === 0? 'block' : 'none';
+        }
+      };
 
-    // AI Chatbox
-    const toggle = document.getElementById('chat-toggle');
-    const box = document.getElementById('chat-box');
-    const closeBtn = document.getElementById('chat-close');
-    const messages = document.getElementById('chat-messages');
-    const inputField = document.getElementById('chat-text');
-    const sendBtnEl = document.getElementById('chat-send');
+      // --- 模块化：内嵌视图管理器 ---
+      const viewManager = {
+        init() {
+          // 使用事件委托，提高性能
+          DOMElements.mainView.addEventListener('click', (e) => {
+            const link = e.target.closest('.card-link');
+            if (link) {
+              e.preventDefault();
+              this.showProject(link.href, link.querySelector('.title').textContent);
+            }
+          });
 
-    toggle.addEventListener('click', () => box.style.display = 'flex');
-    closeBtn.addEventListener('click', () => box.style.display = 'none');
-    sendBtnEl.addEventListener('click', sendMessage);
-    inputField.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+          DOMElements.projectFrame.addEventListener('load', () => this.hideSkeleton());
+          DOMElements.projectBack.addEventListener('click', () => this.hideProject());
+          DOMElements.breadcrumbHome.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.hideProject();
+          });
+        },
+        showProject(url, title) {
+          DOMElements.skeleton.style.display = 'block';
+          DOMElements.projectTitle.textContent = title;
+          DOMElements.projectFrame.src = 'about:blank'; // 清空旧内容
+          setTimeout(() => { DOMElements.projectFrame.src = url; }, 50); // 延迟加载以显示骨架
+          DOMElements.mainView.style.display = 'none';
+          DOMElements.projectView.style.display = 'flex';
+        },
+        hideProject() {
+          DOMElements.projectFrame.src = 'about:blank';
+          DOMElements.projectView.style.display = 'none';
+          DOMElements.mainView.style.display = 'block';
+        },
+        hideSkeleton() {
+          DOMElements.skeleton.style.display = 'none';
+        }
+      };
 
-    async function sendMessage() {
-      const txt = inputField.value.trim();
-      if (!txt) return;
-      appendMsg('user', txt);
-      inputField.value = '';
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({message: txt})
-        });
-        const { reply } = await res.json();
-        appendMsg('ai', reply);
-      } catch {
-        appendMsg('ai', lang === 'zh' ? '请求失败，请稍后重试。' : 'Request failed.');
-      }
-    }
-    function appendMsg(who, txt) {
-      const msg = document.createElement('div');
-      msg.className = `msg ${who}`;
-      const b = document.createElement('div');
-      b.className = 'bubble';
-      b.textContent = txt;
-      msg.appendChild(b);
-      messages.appendChild(msg);
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    // 初始渲染
-    updateTexts();
-  </script>
-</body>
-</html>
+      // --- 模块化：AI 聊天框功能 ---
+      const chatBot = {
+        init() {
+          DOMElements.chatToggle.addEventListener('click', () => this.toggle(true));
+          DOMElements.chatClose.addEventListener('click', () => this.toggle(false));
+          DOMElements.chatSend.addEventListener('click', () => this.sendMessage());
+          DOMElements.chatInput.addEvent
